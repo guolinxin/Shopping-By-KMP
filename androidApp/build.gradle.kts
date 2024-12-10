@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -26,6 +27,7 @@ kotlin {
         }
     }
 }
+
 android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     namespace = "com.razzaghi.shopingbykmp.android"
@@ -37,6 +39,7 @@ android {
         versionName = libs.versions.android.version.name.get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -50,11 +53,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        jvmToolchain(17)
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
