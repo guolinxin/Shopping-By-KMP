@@ -204,7 +204,9 @@ private fun ProductSearchBox(product: Product, isLastItem: Boolean, navigateToDe
                 }
             }
 
-            if (!isLastItem) HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+            if (!isLastItem) HorizontalDivider(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
+            )
         }
     }
 }

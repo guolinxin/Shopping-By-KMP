@@ -23,6 +23,10 @@ sealed class DetailEvent {
         val uiComponent: UIComponent
     ) : DetailEvent()
 
+    data class Success(
+        val uiComponent: UIComponent
+    ) : DetailEvent()
+
    data object OnRetryNetwork : DetailEvent()
     data class OnUpdateNetworkState(
         val networkState: NetworkState

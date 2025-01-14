@@ -17,6 +17,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,6 +31,7 @@ import business.core.NetworkState
 import business.core.ProgressBarState
 import business.core.Queue
 import business.core.UIComponent
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import shoping_by_kmp.shared.generated.resources.Res
@@ -49,6 +55,7 @@ fun DefaultScreenUI(
     onClickEndIconToolbar: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
+    var showDialog by remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -88,12 +95,17 @@ fun DefaultScreenUI(
             // process the queue
             if (!queue.isEmpty()) {
                 queue.peek()?.let { uiComponent ->
-                    if (uiComponent is UIComponent.Dialog) {
+                    if (uiComponent is UIComponent.Dialog && showDialog) {
                         CreateUIComponentDialog(
                             title = uiComponent.alert.title,
                             description = uiComponent.alert.message,
                             onRemoveHeadFromQueue = onRemoveHeadFromQueue
                         )
+
+                        LaunchedEffect(Unit) {
+                            delay(2000) // Delay for 3 seconds
+                            showDialog = false // Hide the popup
+                        }
                     }
                     if (uiComponent is UIComponent.ToastSimple) {
                         ShowSnackbar(

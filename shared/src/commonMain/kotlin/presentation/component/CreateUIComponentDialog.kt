@@ -3,7 +3,6 @@ package presentation.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -19,7 +18,6 @@ fun CreateUIComponentDialog(
     description: String,
     onRemoveHeadFromQueue: () -> Unit
 ) {
-
     GenericDialog(
         modifier = Modifier
             .fillMaxWidth(0.9f),
@@ -39,6 +37,7 @@ fun GenericDialog(
     description: String,
     onRemoveHeadFromQueue: () -> Unit,
 ) {
+
     CustomAlertDialog(
         onDismissRequest = {
             onRemoveHeadFromQueue()
@@ -53,10 +52,10 @@ fun GenericDialog(
                 Text(
                     text = title
                 )
+
                 Text(text = description)
             }
         }
-
     }
 }
 

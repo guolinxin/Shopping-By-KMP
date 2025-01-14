@@ -22,8 +22,6 @@ class DetailViewModel(
 ) : ViewModel() {
 
 
-
-
     val state: MutableState<DetailState> = mutableStateOf(DetailState())
 
 
@@ -60,6 +58,10 @@ class DetailViewModel(
 
             is DetailEvent.OnUpdateNetworkState -> {
                 onUpdateNetworkState(event.networkState)
+            }
+
+            is DetailEvent.Success -> {
+                appendToMessageQueue(event.uiComponent)
             }
         }
     }
@@ -99,7 +101,11 @@ class DetailViewModel(
                 when (dataState) {
                     is DataState.NetworkStatus -> {}
                     is DataState.Response -> {
-                        onTriggerEvent(DetailEvent.Error(dataState.uiComponent))
+                        if (dataState.uiComponent is UIComponent.Dialog) {
+                            onTriggerEvent(DetailEvent.Success(dataState.uiComponent))
+                        } else {
+                            onTriggerEvent(DetailEvent.Error(dataState.uiComponent))
+                        }
                     }
 
                     is DataState.Data -> {}
@@ -125,6 +131,7 @@ class DetailViewModel(
                 is DataState.NetworkStatus -> {
                     onTriggerEvent(DetailEvent.OnUpdateNetworkState(dataState.networkState))
                 }
+
                 is DataState.Response -> {
                     onTriggerEvent(DetailEvent.Error(dataState.uiComponent))
                 }
@@ -161,8 +168,14 @@ class DetailViewModel(
     private fun removeHeadMessage() {
         try {
             val queue = state.value.errorQueue
-            queue.remove() // can throw exception if empty
-            state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+            val dialog = queue.remove()
+
+            print(dialog)
+
+            // can throw exception if empty
+            if (queue.isEmpty()) {
+                state.value = state.value.copy(errorQueue = Queue(mutableListOf())) // force recompose
+            }
             state.value = state.value.copy(errorQueue = queue)
         } catch (e: Exception) {
             println("${CUSTOM_TAG}: removeHeadMessage: Nothing to remove from DialogQueue")
