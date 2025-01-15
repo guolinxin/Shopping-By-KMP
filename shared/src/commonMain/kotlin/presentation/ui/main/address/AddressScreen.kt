@@ -50,7 +50,8 @@ import shoping_by_kmp.shared.generated.resources.no_address
 fun AddressScreen(state: AddressState, events: (AddressEvent) -> Unit, popup: () -> Unit) {
 
     if (state.addAddressDialogState == UIComponentState.Show) {
-        AddAddressDialog(onDismissRequest = {
+        AddAddressDialog(
+            onDismissRequest = {
             events(AddressEvent.OnUpdateAddAddressDialogState(UIComponentState.Hide))
         },
             onExecute = { address, country, city, state, zipCode ->
